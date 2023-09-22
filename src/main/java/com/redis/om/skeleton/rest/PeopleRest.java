@@ -22,6 +22,7 @@ public class PeopleRest {
     @GetMapping
     public Iterable<Person> all(){
         return repository.findAll();
+//        return entityStream.of(Person.class).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -29,14 +30,16 @@ public class PeopleRest {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Objeto não existente"));
     }
 
-//    @GetMapping("/name")
-//    public Iterable<Person> findByFirstNameAndLastName(){
-////        return repository.findByFirstNameAndLastName(first, last);
-//        return entityStream
-//                .of(Person.class)
-//                .filter(Person$.FIRST_NAME.eq("Zoe"))
-//                .filter(Person$.LAST_NAME.eq("Saldana"))
-//                .collect(Collectors.toList());
-//    }
+    @GetMapping("/name")
+    public Iterable<Person> findByFirstNameAndLastName(@RequestParam String first, @RequestParam String last){
+//        return repository.findByFirstNameAndLastName(first, last);
+        return entityStream
+                .of(Person.class)
+                .filter(Person$.FIRST_NAME.eq(first))
+                .filter(Person$.LAST_NAME.eq(last))
+                .collect(Collectors.toList());
+    }
+
+
 
 }
